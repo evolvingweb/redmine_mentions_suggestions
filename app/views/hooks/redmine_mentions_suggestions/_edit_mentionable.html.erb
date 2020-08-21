@@ -1,0 +1,34 @@
+<% regex_find = '/\B'+Setting.plugin_redmine_mentions['trigger']+'(\w*)$/i'%>
+<% if @project %>
+  <% users = @project.users.to_a.delete_if{|u| (u.type != 'User' || u.mail.empty?)}%>
+<% else %>
+  <% users = User.active.to_a.delete_if{|u| (u.type != 'User' || u.mail.empty?)}%>
+<% end %>
+<% users_regex = users.collect{|u| "#{Setting.plugin_redmine_mentions['trigger']}#{u.login}"}.join('|')%>
+<% regex_highlight = '/\B('+users_regex+')\b/g' %>
+<script>
+  var mentions = <%=  users.collect{|u| "#{u.id}-#{u.login}"}.to_json.html_safe %>;
+
+  window.setInterval(function(){
+    var text = $('#issue_notes').val();
+    var matches = new RegExp(<%=regex_highlight%>).exec(text);
+    if (matches && matches[1]) {
+      var user = matches[1].substr(1);
+      var id = 0;
+      for (var index = 0; index < mentions.length; index++) {
+        mention = mentions[index];
+        parts = mention.split('-');
+        if (parts[1] === user) {
+          id = parts[0];
+          break;
+        }
+      }
+    }
+    if (id && user) {
+      console.log(user, 'USER');
+      console.log(id, 'ID');
+      // @TODO: Suggest assignee.
+    }
+  }, 2000);
+
+</script>

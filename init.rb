@@ -1,3 +1,5 @@
+require_dependency 'redmine_mentions_suggestions/hooks'
+
 Redmine::Plugin.register :redmine_mentions_suggestions do
   name 'Redmine Mentions Suggestions plugin'
   author 'Author name'
