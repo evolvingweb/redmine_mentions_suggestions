@@ -8,26 +8,41 @@
 <% regex_highlight = '/\B('+users_regex+')\b/g' %>
 <script>
   var mentions = <%=  users.collect{|u| "#{u.id}-#{u.login}"}.to_json.html_safe %>;
+  var id = 0;
+  var user = '';
 
   window.setInterval(function(){
     var text = $('#issue_notes').val();
     var matches = new RegExp(<%=regex_highlight%>).exec(text);
     if (matches && matches[1]) {
       var user = matches[1].substr(1);
-      var id = 0;
+      var updated = false;
       for (var index = 0; index < mentions.length; index++) {
         mention = mentions[index];
         parts = mention.split('-');
         if (parts[1] === user) {
-          id = parts[0];
+          if (parts[0] != id) {
+            id = parts[0];
+            updated = true;
+          }
           break;
         }
       }
     }
-    if (id && user) {
-      console.log(user, 'USER');
-      console.log(id, 'ID');
-      // @TODO: Suggest assignee.
+    if (updated) {
+      var $suggest_assignee = false;
+      if ($('.issue-suggest-assignee').length) {
+        $suggest_assignee = $('.issue-suggest-assignee');
+      }
+      else {
+        $suggest_assignee = $('<div class="issue-suggest-assignee"/>');
+      }
+      // Empty?
+      $suggest_assignee.html('');
+      $suggest_assignee.append('<input id="issue_suggest_assignee_'+ id + '" type="checkbox" name="issue_suggest_assignee" value="1">');
+      $suggest_assignee.append('<label>Assign issue to ' + user + '</label>');
+      $('#issue_private_notes').before($suggest_assignee);
+      $('input[name="issue_suggest_assignee"]').prop('checked', true);
     }
   }, 2000);
 
