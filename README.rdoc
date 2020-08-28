@@ -1,3 +1,0 @@
-= redmine_mentions_suggestions
-
-Suggest assignee based on note text.
