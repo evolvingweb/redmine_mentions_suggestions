@@ -37,12 +37,18 @@
       else {
         $suggest_assignee = $('<div class="issue-suggest-assignee"/>');
       }
-      // Empty?
       $suggest_assignee.html('');
-      $suggest_assignee.append('<input id="issue_suggest_assignee_'+ id + '" type="checkbox" name="issue_suggest_assignee" value="1">');
+      $suggest_assignee.append('<input id="issue_suggest_assignee_'+ id + '" data-user-id="' + id + '" type="checkbox" name="issue_suggest_assignee" value="1">');
       $suggest_assignee.append('<label>Assign issue to ' + user + '</label>');
       $('#issue_private_notes').before($suggest_assignee);
       $('input[name="issue_suggest_assignee"]').prop('checked', true);
+
+      $('#issue-form').submit(function() {
+        if ($('input[name="issue_suggest_assignee"]').is(':checked')) {
+          var id = $('input[name="issue_suggest_assignee"]').attr('data-user-id');
+          $('#issue_assigned_to_id').val(id);
+        }
+      });
     }
   }, 2000);
 
