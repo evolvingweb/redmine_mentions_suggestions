@@ -7,7 +7,8 @@
 <% users_regex = users.collect{|u| "#{Setting.plugin_redmine_mentions['trigger']}#{u.login}"}.join('|')%>
 <% regex_highlight = '/\B('+users_regex+')\b/g' %>
 <script>
-  console.log("HELPER 2: <%= self.map_users_to_states(users, @issue) %>");
+  console.log("MAPPING: <%= self.map_users_to_states(users, @issue) %>");
+  console.log("STATUSES: <%= self.status_listing %>");
   var mentions = <%=  users.collect{|u| "#{u.id}-#{u.login}"}.to_json.html_safe %>;
   var id = 0;
   var user = '';
