@@ -1,4 +1,4 @@
-require_dependency 'redmine_mentions_suggestions/hooks'
+require_dependency 'redmine_mentions_suggestions'
 
 Redmine::Plugin.register :redmine_mentions_suggestions do
   name 'Redmine Mentions Suggestions plugin'
@@ -8,3 +8,4 @@ Redmine::Plugin.register :redmine_mentions_suggestions do
   url 'http://example.com/path/to/plugin'
   author_url 'http://example.com/about'
 end
+ 
