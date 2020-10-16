@@ -18,7 +18,9 @@ module IssuesControllerHelper
         if !mapping.key?(assignee)
           mapping[assignee] = []
         end
-        mapping[assignee].push(status)
+        unless mapping[assignee].include? status
+          mapping[assignee].push(status)
+        end
       end
     end
     mapping.to_json.html_safe

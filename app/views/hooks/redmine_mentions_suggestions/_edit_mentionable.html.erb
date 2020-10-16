@@ -53,6 +53,8 @@
           $suggestions.append('<div class="status-suggestion"><input id="issue_suggest_status_'+ statusId + '" data-status-id="' + statusId + '" type="radio" name="issue_suggest_status" value="' + statusId + '"><label>Change status to ' + statusName + '</label></div>');
         }
         $suggestions.append('<div class="status-suggestion"><input id="issue_suggest_status_0" data-status-id="0" type="radio" name="issue_suggest_status" value="0"><label>Do not change status</label></div>');
+        $('#issue_suggest_status_0').prop('checked', true);
+
       }
 
       $('#issue-form').submit(function() {
@@ -60,7 +62,10 @@
           var id = $('input[name="issue_suggest_assignee"]').attr('data-user-id');
           $('#issue_assigned_to_id').val(id);
         }
-        // @TODO: IMPLEMENT.
+        if ($('input[name="issue_suggest_status"]:checked').val()) {
+          var statusId = $('input[name="issue_suggest_status"]:checked').val();
+          $('#issue_status_id').val(statusId);
+        }
       });
     }
   }, 2000);
