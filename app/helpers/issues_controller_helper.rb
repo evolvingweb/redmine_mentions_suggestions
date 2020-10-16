@@ -21,16 +21,16 @@ module IssuesControllerHelper
         mapping[assignee].push(status)
       end
     end
-    mapping
+    mapping.to_json.html_safe
   end
 
   def status_listing
-    issues = IssueStatus.order("position")
+    statuses = IssueStatus.order("position")
     listing = {}
-    issues.each do |issue|
-      listing[issue.id] = issue.name
+    statuses.each do |status|
+      listing[status.id] = "#{status.name}"
     end
-    listing
+    listing.to_json.html_safe
   end
 
 end
