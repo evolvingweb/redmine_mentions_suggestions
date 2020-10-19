@@ -11,6 +11,9 @@
   var id = 0;
   var user = '';
 
+  var usersMapping = <%= self.map_users_to_states(users, @issue) %>;
+  var statuses = <%= self.status_listing %>;
+
   window.setInterval(function(){
     var text = $('#issue_notes').val();
     var matches = new RegExp(<%=regex_highlight%>).exec(text);
@@ -30,23 +33,38 @@
       }
     }
     if (updated) {
-      var $suggest_assignee = false;
-      if ($('.issue-suggest-assignee').length) {
-        $suggest_assignee = $('.issue-suggest-assignee');
+      var $suggestions = false;
+      if ($('.issue-suggestions').length) {
+        $suggestions = $('.issue-suggestions');
       }
       else {
-        $suggest_assignee = $('<div class="issue-suggest-assignee"/>');
+        $suggestions = $('<div class="issue-suggestions"/>');
       }
-      $suggest_assignee.html('');
-      $suggest_assignee.append('<input id="issue_suggest_assignee_'+ id + '" data-user-id="' + id + '" type="checkbox" name="issue_suggest_assignee" value="1">');
-      $suggest_assignee.append('<label>Assign issue to ' + user + '</label>');
-      $('#issue_private_notes').before($suggest_assignee);
+      $suggestions.html('');
+      $suggestions.append('<div class="assignee-suggestion"><input id="issue_suggest_assignee_'+ id + '" data-user-id="' + id + '" type="checkbox" name="issue_suggest_assignee" value="1"><label>Assign issue to ' + user + '</label></div>');
+      $('#issue_private_notes').before($suggestions);
       $('input[name="issue_suggest_assignee"]').prop('checked', true);
+
+      if (usersMapping[id]) {
+        for (var index = 0; index < usersMapping[id].length; index++) {
+          statusId = usersMapping[id][index];
+          statusName = statuses[statusId];
+
+          $suggestions.append('<div class="status-suggestion"><input id="issue_suggest_status_'+ statusId + '" data-status-id="' + statusId + '" type="radio" name="issue_suggest_status" value="' + statusId + '"><label>Change status to ' + statusName + '</label></div>');
+        }
+        $suggestions.append('<div class="status-suggestion"><input id="issue_suggest_status_0" data-status-id="0" type="radio" name="issue_suggest_status" value="0"><label>Do not change status</label></div>');
+        $('#issue_suggest_status_0').prop('checked', true);
+
+      }
 
       $('#issue-form').submit(function() {
         if ($('input[name="issue_suggest_assignee"]').is(':checked')) {
           var id = $('input[name="issue_suggest_assignee"]').attr('data-user-id');
           $('#issue_assigned_to_id').val(id);
+        }
+        if ($('input[name="issue_suggest_status"]:checked').val()) {
+          var statusId = $('input[name="issue_suggest_status"]:checked').val();
+          $('#issue_status_id').val(statusId);
         }
       });
     }

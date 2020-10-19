@@ -1,4 +1,4 @@
-require_dependency 'redmine_mentions_suggestions/hooks'
+require_dependency 'redmine_mentions_suggestions'
 
 Redmine::Plugin.register :redmine_mentions_suggestions do
   name 'Redmine Mentions Suggestions plugin'
@@ -8,3 +8,4 @@ Redmine::Plugin.register :redmine_mentions_suggestions do
   url 'https://github.com/evolvingweb/redmine_mentions_suggestions'
   author_url 'https://evolvingweb.ca'
 end
+ 
