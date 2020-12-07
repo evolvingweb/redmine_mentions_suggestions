@@ -64,7 +64,9 @@
         }
         if ($('input[name="issue_suggest_status"]:checked').val()) {
           var statusId = $('input[name="issue_suggest_status"]:checked').val();
-          $('#issue_status_id').val(statusId);
+          if (statusId != 0) {
+            $('#issue_status_id').val(statusId);
+          }
         }
       });
     }
