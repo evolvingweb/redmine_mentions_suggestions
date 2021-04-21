@@ -13,6 +13,7 @@
 
   var usersMapping = <%= self.map_users_to_states(users, @issue) %>;
   var statuses = <%= self.status_listing %>;
+  var suggestMentions = <%= User.current.pref.suggest_mentions? %>
 
   window.setInterval(function(){
     var text = $('#issue_notes').val();
@@ -43,7 +44,9 @@
       $suggestions.html('');
       $suggestions.append('<div class="assignee-suggestion"><input id="issue_suggest_assignee_'+ id + '" data-user-id="' + id + '" type="checkbox" name="issue_suggest_assignee" value="1"><label>Assign issue to ' + user + '</label></div>');
       $('#issue_private_notes').before($suggestions);
-      $('input[name="issue_suggest_assignee"]').prop('checked', true);
+      if (suggestMentions) {
+        $('input[name="issue_suggest_assignee"]').prop('checked', true);
+      }
 
       if (usersMapping[id]) {
         for (var index = 0; index < usersMapping[id].length; index++) {
