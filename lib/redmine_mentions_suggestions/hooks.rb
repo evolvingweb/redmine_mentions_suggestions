@@ -11,5 +11,7 @@ module RedmineMentionsSuggestions
               :partial => 'hooks/redmine_mentions_suggestions/edit_mentionable'
     render_on :view_issues_form_details_bottom,
               :partial => 'hooks/redmine_mentions_suggestions/edit_mentionable'
+    render_on :view_my_account_preferences,
+              partial: 'hooks/redmine_mentions_suggestions/mentions_suggestions_preference'
   end
 end
