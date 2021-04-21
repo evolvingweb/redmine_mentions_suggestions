@@ -7,6 +7,8 @@ module RedmineMentionsSuggestions
     # Additional context fields
     #   :issue  => the issue this is edited
     #   :f      => the form object to create additional fields
+    render_on :view_my_account_preferences,
+              partial: 'hooks/redmine_mentions_suggestions/mentions_suggestions_preference'
     render_on :view_issues_edit_notes_bottom,
               :partial => 'hooks/redmine_mentions_suggestions/edit_mentionable'
     render_on :view_issues_form_details_bottom,
