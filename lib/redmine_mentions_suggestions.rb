@@ -1,6 +1,4 @@
-Rails.configuration.to_prepare do
+require File.dirname(__FILE__) + '/redmine_mentions_suggestions/hooks'
 
-  require_dependency 'redmine_mentions_suggestions/hooks'
-end
 module RedmineMentionsSuggestions
 end
